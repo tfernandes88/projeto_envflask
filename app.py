@@ -34,7 +34,7 @@ import os
 
 # Nome das pastas
 folders = [
-#    'app',
+    'app',
 #    'app/templates',
 #    'app/static',
 #   'app/static/css',
@@ -48,7 +48,7 @@ folders = [
 # Nome dos arquivos
 
 arquivos = [
-#    'app/__init__.py',
+    'app/__init__.py',
 #    'app/routes.py',
 #    'app/models.py',
 #    'app/forms.py',
@@ -88,6 +88,25 @@ for arquivo in arquivos:
                     "app = create_app()\n\n"
                     "if __name__ == \"__main__\":\n"
                     "    app.run(debug=True)\n"
+                )
+            elif arquivo == 'app/__init__.py':
+                file.write(
+                    "from flask import Flask\n"
+                    "from flask_sqlalchemy import SQLAlchemy\n\n"
+
+                    "db = SQLAlchemy()\n\n"
+
+                    "def create_app():\n"
+                    "    app = Flask(__name__)\n"
+                    "    app.config.from_object('config.Config')\n\n"
+                    
+                    "db.init_app(app)\n\n"
+
+                    "# Registrar rotas\n"
+                    "with app.app_context():\n"
+                    "    from . import routes\n"
+                    "    db.create_all()\n"
+                    "return app"
                 )
             else:
                 file.write('# Arquivo vazio\n')
